@@ -1,0 +1,12 @@
+.footer {
+  background-color: #1e293b;
+  border-top: 1px solid #334155;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+
+  /* Empurra o footer para o final da página caso haja pouco conteúdo */
+  margin-top: auto;
+}
