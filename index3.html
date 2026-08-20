@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Extrato Financeiro</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #09090b;
+    color: #f4f4f5;
+    padding: 24px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header-left h1 {
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.header-left p {
+    color: #71717a;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+
+/* =========================================================
+   FILTRO DE PERÍODO
+========================================================= */
+
+.period-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.period-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.period-label {
+    color: #a1a1aa;
+    font-size: 13px;
+}
+
+.period-bar select {
+    background: #09090b;
+    color: #f4f4f5;
+    border: 1px solid #3f3f46;
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card-title {
+    color: #a1a1aa;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.card-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.card-info {
+    color: #71717a;
+    font-size: 11px;
+}
+
+.card-saldo .card-value {
+    color: #38bdf8;
+}
+
+.card-entradas .card-value {
+    color: #34d399;
+}
+
+.card-saidas .card-value {
+    color: #f87171;
+}
+
+.card-resultado .card-value {
+    color: #a78bfa;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.panel {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.panel-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   GRÁFICO
+========================================================= */
+
+.chart {
+    height: 230px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 12px;
+    border-bottom: 1px solid #27272a;
+    padding: 20px 10px 0;
+}
+
+.chart-day {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+}
+
+.bars {
+    height: 180px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+}
+
+.bar {
+    width: 12px;
+    border-radius: 4px 4px 0 0;
+}
+
+.bar.income {
+    background: #34d399;
+}
+
+.bar.expense {
+    background: #f87171;
+}
+
+.chart-label {
+    color: #71717a;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   CATEGORIAS
+========================================================= */
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.category-row {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.category-name {
+    color: #d4d4d8;
+}
+
+.category-value {
+    color: #a1a1aa;
+}
+
+.progress {
+    height: 6px;
+    background: #27272a;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #8b5cf6;
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   EXTRATO
+========================================================= */
+
+.transactions-panel {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.transactions-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #27272a;
+}
+
+.search-filter {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 10px;
+}
+
+.input,
+.select {
+    width: 100%;
+    background: #09090b;
+    border: 1px solid #3f3f46;
+    color: #f4f4f5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    outline: none;
+}
+
+.input:focus,
+.select:focus {
+    border-color: #2563eb;
+}
+
+
+/* =========================================================
+   TABELA
+========================================================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #121214;
+}
+
+th {
+    color: #71717a;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: left;
+    padding: 13px 20px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 15px 20px;
+    border-top: 1px solid #27272a;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.description {
+    font-weight: 600;
+}
+
+.subtext {
+    color: #71717a;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.entry {
+    color: #34d399;
+    font-weight: 600;
+}
+
+.expense {
+    color: #f87171;
+    font-weight: 600;
+}
+
+.transfer {
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+    display: inline-flex;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.status-paid {
+    background: rgba(52, 211, 153, .12);
+    color: #34d399;
+}
+
+.status-pending {
+    background: rgba(250, 204, 21, .12);
+    color: #facc15;
+}
+
+.status-scheduled {
+    background: rgba(56, 189, 248, .12);
+    color: #38bdf8;
+}
+
+
+/* =========================================================
+   AÇÕES
+========================================================= */
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.action-btn:hover {
+    color: white;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+}
+
+.close {
+    background: transparent;
+    border: none;
+    color: #71717a;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #a1a1aa;
+    font-size: 12px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.btn-secondary {
+    background: #27272a;
+    border: none;
+    color: #f4f4f5;
+    padding: 11px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-filter {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-left h1 {
+        font-size: 21px;
+    }
+
+    .btn-primary {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .period-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .card {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .card-value {
+        font-size: 18px;
+    }
+
+    .card-title {
+        font-size: 11px;
+    }
+
+    .search-filter {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =====================================================
+     CABEÇALHO
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+        <h1>Extrato Financeiro</h1>
+        <p>Controle suas entradas, saídas e movimentações financeiras.</p>
+    </div>
+
+    <button class="btn-primary" onclick="abrirModal()">
+        + Nova transação
+    </button>
+
+</header>
+
+
+<!-- =====================================================
+     PERÍODO
+===================================================== -->
+
+<div class="period-bar">
+
+    <div class="period-left">
+
+        <span class="period-label">
+            Período
+        </span>
+
+        <select id="periodo">
+            <option>Este mês</option>
+            <option>Mês anterior</option>
+            <option>Últimos 30 dias</option>
+            <option>Últimos 90 dias</option>
+            <option>Este ano</option>
+        </select>
+
+    </div>
+
+    <span class="period-label">
+        Agosto de 2026
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     CARDS
+===================================================== -->
+
+<div class="cards-container">
+
+    <div class="card card-saldo">
+
+        <span class="card-title">
+            Saldo Total
+        </span>
+
+        <h3 class="card-value">
+            R$ 5.490,00
+        </h3>
+
+        <p class="card-info">
+            Disponível em suas contas
+        </p>
+
+    </div>
+
+
+    <div class="card card-entradas">
+
+        <span class="card-title">
+            Entradas
+        </span>
+
+        <h3 class="card-value">
+            + R$ 7.200,00
+        </h3>
+
+        <p class="card-info">
+            Receitas no período
+        </p>
+
+    </div>
+
+
+    <div class="card card-saidas">
+
+        <span class="card-title">
+            Saídas
+        </span>
+
+        <h3 class="card-value">
+            - R$ 1.710,00
+        </h3>
+
+        <p class="card-info">
+            Despesas no período
+        </p>
+
+    </div>
+
+
+    <div class="card card-resultado">
+
+        <span class="card-title">
+            Resultado do período
+        </span>
+
+        <h3 class="card-value">
+            + R$ 5.490,00
+        </h3>
+
+        <p class="card-info">
+            Entradas − Saídas
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div class="dashboard-grid">
+
+
+<!-- GRÁFICO -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        Fluxo financeiro
+    </div>
+
+    <div class="chart">
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:80px"></div>
+                <div class="bar expense" style="height:35px"></div>
+            </div>
+
+            <span class="chart-label">15</span>
+
+        </div>
+
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:120px"></div>
+                <div class="bar expense" style="height:45px"></div>
+            </div>
+
+            <span class="chart-label">16</span>
+
+        </div>
+
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:100px"></div>
+                <div class="bar expense" style="height:70px"></div>
+            </div>
+
+            <span class="chart-label">17</span>
+
+        </div>
+
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:145px"></div>
+                <div class="bar expense" style="height:50px"></div>
+            </div>
+
+            <span class="chart-label">18</span>
+
+        </div>
+
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:110px"></div>
+                <div class="bar expense" style="height:90px"></div>
+            </div>
+
+            <span class="chart-label">19</span>
+
+        </div>
+
+
+        <div class="chart-day">
+
+            <div class="bars">
+                <div class="bar income" style="height:160px"></div>
+                <div class="bar expense" style="height:60px"></div>
+            </div>
+
+            <span class="chart-label">20</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CATEGORIAS -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        Despesas por categoria
+    </div>
+
+    <div class="category-list">
+
+
+        <div class="category-row">
+
+            <div class="category-header">
+
+                <span class="category-name">
+                    Alimentação
+                </span>
+
+                <span class="category-value">
+                    R$ 650
+                </span>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:70%"></div>
+            </div>
+
+        </div>
+
+
+        <div class="category-row">
+
+            <div class="category-header">
+
+                <span class="category-name">
+                    Moradia
+                </span>
+
+                <span class="category-value">
+                    R$ 500
+                </span>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:55%"></div>
+            </div>
+
+        </div>
+
+
+        <div class="category-row">
+
+            <div class="category-header">
+
+                <span class="category-name">
+                    Transporte
+                </span>
+
+                <span class="category-value">
+                    R$ 280
+                </span>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:35%"></div>
+            </div>
+
+        </div>
+
+
+        <div class="category-row">
+
+            <div class="category-header">
+
+                <span class="category-name">
+                    Lazer
+                </span>
+
+                <span class="category-value">
+                    R$ 180
+                </span>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:25%"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     EXTRATO
+===================================================== -->
+
+<div class="transactions-panel">
+
+
+<div class="transactions-header">
+
+    <div class="search-filter">
+
+        <input
+            type="text"
+            id="busca"
+            class="input"
+            placeholder="🔎 Buscar transação..."
+            oninput="filtrarTransacoes()"
+        >
+
+
+        <select id="filtroTipo"
+                class="select"
+                onchange="filtrarTransacoes()">
+
+            <option value="">Todos os tipos</option>
+            <option value="Entrada">Entradas</option>
+            <option value="Saída">Saídas</option>
+            <option value="Transferência">Transferências</option>
+
+        </select>
+
+
+        <select id="filtroCategoria"
+                class="select"
+                onchange="filtrarTransacoes()">
+
+            <option value="">Todas categorias</option>
+            <option>Alimentação</option>
+            <option>Moradia</option>
+            <option>Transporte</option>
+            <option>Lazer</option>
+            <option>Salário</option>
+            <option>Investimentos</option>
+
+        </select>
+
+
+        <select id="filtroConta"
+                class="select"
+                onchange="filtrarTransacoes()">
+
+            <option value="">Todas as contas</option>
+            <option>Sofisa</option>
+            <option>Nubank</option>
+            <option>Banco do Brasil</option>
+
+        </select>
+
+
+        <select id="filtroStatus"
+                class="select"
+                onchange="filtrarTransacoes()">
+
+            <option value="">Todos os status</option>
+            <option>Pago</option>
+            <option>Recebido</option>
+            <option>Pendente</option>
+            <option>Agendado</option>
+
+        </select>
+
+    </div>
+
+</div>
+
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>DATA</th>
+<th>DESCRIÇÃO</th>
+<th>CATEGORIA</th>
+<th>CONTA</th>
+<th>TIPO</th>
+<th>VALOR</th>
+<th>STATUS</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="transactionsBody">
+
+
+<tr>
+
+<td>
+20/08/2026
+</td>
+
+
+<td>
+
+<div class="description">
+Salário
+</div>
+
+<div class="subtext">
+Recebimento mensal
+</div>
+
+</td>
+
+
+<td>
+Salário
+</td>
+
+
+<td>
+Sofisa
+</td>
+
+
+<td class="entry">
+Entrada
+</td>
+
+
+<td class="entry">
++ R$ 5.000,00
+</td>
+
+
+<td>
+
+<span class="status status-paid">
+Recebido
+</span>
+
+</td>
+
+
+<td>
+<button class="action-btn">⋮</button>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+19/08/2026
+</td>
+
+
+<td>
+
+<div class="description">
+Supermercado
+</div>
+
+<div class="subtext">
+Compras do mês
+</div>
+
+</td>
+
+
+<td>
+Alimentação
+</td>
+
+
+<td>
+Nubank
+</td>
+
+
+<td class="expense">
+Saída
+</td>
+
+
+<td class="expense">
+- R$ 350,00
+</td>
+
+
+<td>
+
+<span class="status status-paid">
+Pago
+</span>
+
+</td>
+
+
+<td>
+<button class="action-btn">⋮</button>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+18/08/2026
+</td>
+
+
+<td>
+
+<div class="description">
+Netflix
+</div>
+
+<div class="subtext">
+Assinatura mensal
+</div>
+
+</td>
+
+
+<td>
+Lazer
+</td>
+
+
+<td>
+Nubank
+</td>
+
+
+<td class="expense">
+Saída
+</td>
+
+
+<td class="expense">
+- R$ 55,00
+</td>
+
+
+<td>
+
+<span class="status status-paid">
+Pago
+</span>
+
+</td>
+
+
+<td>
+<button class="action-btn">⋮</button>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+17/08/2026
+</td>
+
+
+<td>
+
+<div class="description">
+Venda de produto
+</div>
+
+<div class="subtext">
+Venda realizada
+</div>
+
+</td>
+
+
+<td>
+Vendas
+</td>
+
+
+<td>
+Sofisa
+</td>
+
+
+<td class="entry">
+Entrada
+</td>
+
+
+<td class="entry">
++ R$ 800,00
+</td>
+
+
+<td>
+
+<span class="status status-paid">
+Recebido
+</span>
+
+</td>
+
+
+<td>
+<button class="action-btn">⋮</button>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+16/08/2026
+</td>
+
+
+<td>
+
+<div class="description">
+Transferência para Nubank
+</div>
+
+<div class="subtext">
+Sofisa → Nubank
+</div>
+
+</td>
+
+
+<td>
+Transferência
+</td>
+
+
+<td>
+Sofisa</td>
+
+
+<td class="transfer">
+Transferência
+</td>
+
+
+<td class="transfer">
+R$ 1.000,00
+</td>
+
+
+<td>
+
+<span class="status status-paid">
+Concluída
+</span>
+
+</td>
+
+
+<td>
+<button class="action-btn">⋮</button>
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL NOVA TRANSAÇÃO
+===================================================== -->
+
+<div class="modal-overlay" id="modal">
+
+<div class="modal">
+
+
+<div class="modal-header">
+
+<h2>
+Nova transação
+</h2>
+
+<button class="close" onclick="fecharModal()">
+×
+</button>
+
+</div>
+
+
+<form onsubmit="salvarTransacao(event)">
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+Tipo de transação
+</label>
+
+<select class="select" id="tipoTransacao">
+
+<option value="Entrada">
+Entrada
+</option>
+
+<option value="Saída">
+Saída
+</option>
+
+<option value="Transferência">
+Transferência
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Data
+</label>
+
+<input
+    type="date"
+    class="input"
+    id="dataTransacao"
+    required
+>
+
+</div>
+
+
+<div class="form-group full">
+
+<label>
+Descrição
+</label>
+
+<input
+    type="text"
+    class="input"
+    id="descricao"
+    placeholder="Ex.: Salário, supermercado..."
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Valor
+</label>
+
+<input
+    type="number"
+    step="0.01"
+    class="input"
+    id="valor"
+    placeholder="0,00"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Categoria
+</label>
+
+<select class="select" id="categoria">
+
+<option>Alimentação</option>
+<option>Moradia</option>
+<option>Transporte</option>
+<option>Saúde</option>
+<option>Educação</option>
+<option>Lazer</option>
+<option>Salário</option>
+<option>Vendas</option>
+<option>Investimentos</option>
+<option>Outros</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Conta
+</label>
+
+<select class="select" id="conta">
+
+<option>Sofisa</option>
+<option>Nubank</option>
+<option>Banco do Brasil</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Forma de pagamento
+</label>
+
+<select class="select">
+
+<option>Pix</option>
+<option>Débito</option>
+<option>Crédito</option>
+<option>Boleto</option>
+<option>Dinheiro</option>
+<option>TED</option>
+<option>Outro</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Status
+</label>
+
+<select class="select">
+
+<option>Pago</option>
+<option>Recebido</option>
+<option>Pendente</option>
+<option>Agendado</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group full">
+
+<label>
+Observação
+</label>
+
+<textarea
+    class="input"
+    rows="3"
+    placeholder="Informações adicionais..."
+></textarea>
+
+</div>
+
+
+</div>
+
+
+<div class="form-actions">
+
+<button
+    type="button"
+    class="btn-secondary"
+    onclick="fecharModal()"
+>
+Cancelar
+</button>
+
+<button
+    type="submit"
+    class="btn-primary"
+>
+Salvar transação
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function abrirModal() {
+
+    document
+        .getElementById("modal")
+        .classList
+        .add("active");
+
+}
+
+
+function fecharModal() {
+
+    document
+        .getElementById("modal")
+        .classList
+        .remove("active");
+
+}
+
+
+/* =========================================================
+   SALVAR TRANSAÇÃO
+========================================================= */
+
+function salvarTransacao(event) {
+
+    event.preventDefault();
+
+    const tipo =
+        document.getElementById("tipoTransacao").value;
+
+    const descricao =
+        document.getElementById("descricao").value;
+
+    const valor =
+        parseFloat(
+            document.getElementById("valor").value
+        );
+
+    const data =
+        document.getElementById("dataTransacao").value;
+
+    const categoria =
+        document.getElementById("categoria").value;
+
+    const conta =
+        document.getElementById("conta").value;
+
+
+    console.log({
+
+        tipo,
+        descricao,
+        valor,
+        data,
+        categoria,
+        conta
+
+    });
+
+
+    alert("Transação registrada com sucesso!");
+
+    fecharModal();
+
+}
+
+
+/* =========================================================
+   FILTRO
+========================================================= */
+
+function filtrarTransacoes() {
+
+    const busca =
+        document
+        .getElementById("busca")
+        .value
+        .toLowerCase();
+
+
+    const tipo =
+        document
+        .getElementById("filtroTipo")
+        .value;
+
+
+    const categoria =
+        document
+        .getElementById("filtroCategoria")
+        .value;
+
+
+    const conta =
+        document
+        .getElementById("filtroConta")
+        .value;
+
+
+    const status =
+        document
+        .getElementById("filtroStatus")
+        .value;
+
+
+    const linhas =
+        document.querySelectorAll(
+            "#transactionsBody tr"
+        );
+
+
+    linhas.forEach(linha => {
+
+        const texto =
+            linha.innerText.toLowerCase();
+
+
+        const correspondeBusca =
+            !busca ||
+            texto.includes(busca);
+
+
+        const correspondeTipo =
+            !tipo ||
+            texto.includes(tipo);
+
+
+        const correspondeCategoria =
+            !categoria ||
+            texto.includes(categoria);
+
+
+        const correspondeConta =
+            !conta ||
+            texto.includes(conta);
+
+
+        const correspondeStatus =
+            !status ||
+            texto.includes(status);
+
+
+        if (
+            correspondeBusca &&
+            correspondeTipo &&
+            correspondeCategoria &&
+            correspondeConta &&
+            correspondeStatus
+        ) {
+
+            linha.style.display = "";
+
+        } else {
+
+            linha.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   DATA PADRÃO
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const hoje =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    document
+        .getElementById("dataTransacao")
+        .value = hoje;
+
+});
+
+</script>
+
+</body>
+</html>
