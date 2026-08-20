@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu Financeiro | Extrato</title>
+    <link rel="stylesheet" href="css/statement.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar-panel" aria-label="Sidebar de navegação">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand-mark">F</div>
+          <span>Financeiro</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link active" href="#">🏠 Visão geral</a>
+          <a class="sidebar-link" href="#">💳 Contas</a>
+          <a class="sidebar-link" href="#">📊 Extrato</a>
+          <a class="sidebar-link" href="#">💸 Transferências</a>
+          <a class="sidebar-link" href="#">⚙️ Configurações</a>
+        </nav>
+      </aside>
+
+      <main class="page-shell">
+        <header class="topbar">
+          <div class="crumb">
+            <button class="back-link" type="button" aria-label="Voltar">←</button>
+            <span>Meu Financeiro</span>
+          </div>
+          <div class="header-actions">
+            <button class="icon-btn" type="button" aria-label="Notificações">🔔</button>
+            <div class="avatar" aria-label="Avatar do usuário">JP</div>
+          </div>
+        </header>
+
+        <div class="page-header">
+          <h1>Extrato financeiro</h1>
+          <p class="subtitle">Consulte todas as suas movimentações pessoais.</p>
+        </div>
+
+        <section class="card account-selector" aria-label="Seleção de conta">
+          <button class="account-selector-main" type="button" data-account-button aria-expanded="false">
+            <span class="bank-badge">🏦</span>
+            <span class="account-name">
+              <strong>Banco do Brasil</strong>
+              <span>Conta •••• 4821</span>
+            </span>
+            <span class="chevron">▾</span>
+          </button>
+          <div class="account-menu" data-account-menu aria-label="Lista de contas"></div>
+        </section>
+
+        <section class="card balance-card" aria-label="Saldo atual">
+          <div class="balance-header">
+            <span>Saldo atual</span>
+            <button class="toggle-visibility" type="button" data-toggle-balance>👁 Ocultar saldo</button>
+          </div>
+          <div class="balance-amount" data-balance>R$ 12.845,60</div>
+          <div class="summary-grid">
+            <div class="summary-item income">
+              <small>Entradas</small>
+              <strong data-summary="income">+ R$ 5.250,00</strong>
+            </div>
+            <div class="summary-item expense">
+              <small>Saídas</small>
+              <strong data-summary="expense">- R$ 905,80</strong>
+            </div>
+            <div class="summary-item result">
+              <small>Resultado</small>
+              <strong data-summary="result">R$ 4.344,20</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="controls-panel" aria-label="Filtros do extrato">
+          <div class="segmented" role="tablist" aria-label="Períodos">
+            <button type="button" class="filter-chip active">Hoje</button>
+            <button type="button" class="filter-chip">Últimos 7 dias</button>
+            <button type="button" class="filter-chip">Este mês</button>
+            <button type="button" class="filter-chip">Mês anterior</button>
+            <button type="button" class="filter-chip">Últimos 3 meses</button>
+            <button type="button" class="filter-chip">Este ano</button>
+            <button type="button" class="filter-chip">Personalizado</button>
+          </div>
+
+          <div class="search-wrap">
+            <input id="searchInput" type="search" placeholder="Buscar movimentação" aria-label="Buscar movimentação" />
+          </div>
+
+          <button class="secondary-btn" type="button" data-open-filters>Filtrar</button>
+        </section>
+
+        <div class="month-nav" aria-label="Navegação por mês">
+          <div class="month-stepper">
+            <button type="button" aria-label="Mês anterior">←</button>
+            <strong>Agosto 2026</strong>
+            <button type="button" aria-label="Próximo mês">→</button>
+          </div>
+          <button class="ghost-btn" type="button">Hoje</button>
+        </div>
+
+        <section class="card extrato-card" aria-label="Extrato financeiro">
+          <div class="extrato-header">
+            <h2>Movimentações</h2>
+            <button class="cta-btn" type="button">+ Nova movimentação</button>
+          </div>
+
+          <ul class="transactions-list" id="transactionList"></ul>
+          <button class="load-more" type="button" data-load-more>Carregar mais</button>
+        </section>
+      </main>
+
+      <aside class="detail-panel hidden" id="detailPanel" aria-live="polite"></aside>
+    </div>
+
+    <button class="fab" type="button" aria-label="Nova movimentação">＋</button>
+
+    <div class="modal-backdrop" id="filterModal" aria-hidden="true">
+      <div class="filter-modal" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+        <div class="filter-modal-header">
+          <h3 id="filterTitle">Filtrar extrato</h3>
+          <button class="icon-btn" type="button" data-close-filters aria-label="Fechar filtros">✕</button>
+        </div>
+
+        <div class="filter-grid">
+          <div class="field">
+            <label for="filterAccount">Conta</label>
+            <select id="filterAccount"></select>
+          </div>
+          <div class="field">
+            <label for="filterCategory">Categoria</label>
+            <select id="filterCategory"></select>
+          </div>
+          <div class="field">
+            <label for="filterType">Tipo</label>
+            <select id="filterType"></select>
+          </div>
+          <div class="field">
+            <label for="filterStatus">Status</label>
+            <select id="filterStatus"></select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="ghost-btn" type="button" data-clear-filters>Limpar filtros</button>
+          <button class="primary-btn" type="button" data-apply-filters>Aplicar filtros</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/statement.js" defer></script>
+  </body>
+</html>
