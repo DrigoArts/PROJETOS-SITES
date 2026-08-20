@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Projeto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/sidebar.css">
@@ -28,36 +30,43 @@
         <div class="conteudo"></div>
     </main>
 
-    <!-- Fundo escuro semitransparente para quando o menu abrir -->
-    <div class="overlay" id="overlay"></div>
 
-    <!-- Menu Lateral (Sidebar Mobile) -->
-    <aside class="sidebar" id="sidebar" aria-label="Menu Lateral">
-        <div class="sidebar-header">
-            <span class="sidebar-title">Navegação</span>
-            <button type="button" class="btn-close" id="btn-close" aria-label="Fechar Menu">&times;</button>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="#">Home</a>
-            <a href="#">Sobre</a>
-            <a href="#">Serviços</a>
-            <a href="#">Projetos</a>
-            <a href="#">Contato</a>
-        </nav>
-    </aside>
 
-    <!-- Rodapé com Botão Hambúrguer -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <p>&copy; 2026 MeuLogo. Todos os direitos reservados.</p>
-            <!-- Botão Hambúrguer -->
-            <button type="button" class="btn-hamburger" id="btn-menu" aria-label="Abrir menu mobile">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+   <footer>
+    <div id="footer_content">
+        <div id="footer_contacts">
+            <h1>Logo</h1>
+            <p>sonhos</p>
+
+            <div id="footer_social_media">
+                <a href="#" class="footer-link" id="instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+
+            <div id="footer_social_media">
+                <a href="#" class="footer-link" id="instagram"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+
+            <div id="footer_social_media">
+                <a href="#" class="footer-link" id="instagram"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
         </div>
-    </footer>
+
+        <ul class="footer-list">
+            <li>
+                <h3>Blog</h3>
+            </li>
+            <li>
+                <a href="#" class="footer-link">Artigo 1</a>
+            </li>
+            <li>
+                <a href="#" class="footer-link">Artigo 2</a>
+            </li>
+            <li>
+                <a href="#" class="footer-link">Artigo 3</a>
+            </li>
+        </ul>
+    </div>
+   </footer>
 
 </body>
 <script src="js/sidebar.js"></script>
