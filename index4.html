@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        
+        #container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.item {
+    min-height: 180px;
+    padding: 20px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+/* Cores dos itens */
+
+.item:nth-child(1) {
+    background: #2563eb;
+}
+
+.item:nth-child(2) {
+    background: #16a34a;
+}
+
+.item:nth-child(3) {
+    background: #dc2626;
+}
+
+.item:nth-child(4) {
+    background: #9333ea;
+}
+
+.item:nth-child(5) {
+    background: #ea580c;
+}
+
+.item:nth-child(6) {
+    background: #0891b2;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    #container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px;
+        gap: 16px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    #container {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .item {
+        min-height: 160px;
+    }
+}
+        </style>
+</head>
+<body>
+    <div id="container">
+
+    <div class="item">Item 1</div>
+    <div class="item">Item 2</div>
+    <div class="item">Item 3</div>
+
+    <div class="item">Item 4</div>
+    <div class="item">Item 5</div>
+    <div class="item">Item 6</div>
+
+</div>
+</body>
+</html>
